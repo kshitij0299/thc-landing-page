@@ -10,7 +10,7 @@ export function Header() {
                     {/* Logo */}
                     <div className="relative w-48 h-12">
                         <Image
-                            src="/DARK_HR.png"
+                            src="/thc-landing-page/DARK_HR.png"
                             alt="The Hiring Company Logo"
                             fill
                             className="object-contain object-left"
