@@ -1,7 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 
 export function ComingSoonSection() {
+    const scrollToEmail = () => {
+        const emailSection = document.getElementById('email-input-section');
+        if (emailSection) {
+            emailSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
     return (
         <section className="py-24">
             <div className="container mx-auto px-4 text-center">
@@ -19,7 +28,7 @@ export function ComingSoonSection() {
                     </p>
 
                     <div className="pt-4">
-                        <Button size="lg" className="h-12 px-8 text-base font-medium">
+                        <Button size="lg" className="h-12 px-8 text-base font-medium" onClick={scrollToEmail}>
                             Join the waitlist
                             <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>

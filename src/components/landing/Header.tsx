@@ -1,8 +1,17 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export function Header() {
+    const scrollToEmail = () => {
+        const emailSection = document.getElementById('email-input-section');
+        if (emailSection) {
+            emailSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    };
+
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/40">
             <div className="container mx-auto px-4 h-16 flex items-center justify-between">
@@ -31,7 +40,7 @@ export function Header() {
                     </Link>
                 </nav>
 
-                <Button size="sm">Join Waitlist</Button>
+                <Button size="sm" onClick={scrollToEmail}>Join Waitlist</Button>
             </div>
         </header>
     );

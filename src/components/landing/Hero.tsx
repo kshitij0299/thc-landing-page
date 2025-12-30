@@ -1,8 +1,63 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check, Loader2 } from "lucide-react";
+import { useState } from "react";
 
 export function Hero() {
+    const [email, setEmail] = useState("");
+    const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+    const [message, setMessage] = useState("");
+
+    const handleSubmit = async () => {
+        if (!email || !email.includes("@")) {
+            setStatus('error');
+            setMessage("Please enter a valid email address.");
+            return;
+        }
+
+        setStatus('loading');
+        setMessage("");
+
+        const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+        if (!supabaseUrl || !supabaseKey) {
+            setStatus('error');
+            setMessage("System configuration error. Please contact support.");
+            console.error("Supabase credentials missing");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${supabaseUrl}/rest/v1/waitlist`, {
+                method: 'POST',
+                headers: {
+                    'apikey': supabaseKey,
+                    'Authorization': `Bearer ${supabaseKey}`,
+                    'Content-Type': 'application/json',
+                    'Prefer': 'return=minimal',
+                },
+                body: JSON.stringify({ email }),
+            });
+
+            if (response.ok) {
+                setStatus('success');
+                setMessage("You've been added to the waitlist!");
+            } else if (response.status === 409) {
+                setStatus('error');
+                setMessage("This email is already on the waitlist.");
+            } else {
+                setStatus('error');
+                setMessage("Something went wrong. Please try again.");
+            }
+        } catch (error) {
+            setStatus('error');
+            setMessage("Network error. Please try again later.");
+        }
+    };
+
     return (
         <section className="pt-32 pb-20 md:pt-40 md:pb-28 px-4 overflow-hidden relative">
             <div className="container mx-auto max-w-5xl relative z-10">
@@ -24,16 +79,47 @@ export function Hero() {
                         From job definition to final offer, IRS brings clarity, calibration, and verification into every hiring decision.
                     </p>
 
-                    <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md mt-4">
-                        <Input
-                            type="email"
-                            placeholder="Enter your work email"
-                            className="h-12 text-base"
-                        />
-                        <Button size="lg" className="h-12 px-8 text-base font-medium">
-                            Join the waitlist
-                            <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
+                    <div className="w-full max-w-md mt-4 flex flex-col gap-2">
+                        <div id="email-input-section" className="flex flex-col sm:flex-row gap-4 w-full">
+                            <Input
+                                type="email"
+                                placeholder="Enter your work email"
+                                className="h-12 text-base"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                disabled={status === 'loading' || status === 'success'}
+                                onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                        handleSubmit();
+                                    }
+                                }}
+                            />
+                            <Button
+                                size="lg"
+                                className="h-12 px-8 text-base font-medium min-w-[140px]"
+                                onClick={handleSubmit}
+                                disabled={status === 'loading' || status === 'success'}
+                            >
+                                {status === 'loading' ? (
+                                    <Loader2 className="h-4 w-4 animate-spin" />
+                                ) : status === 'success' ? (
+                                    <>
+                                        Joined
+                                        <Check className="ml-2 h-4 w-4" />
+                                    </>
+                                ) : (
+                                    <>
+                                        Join the waitlist
+                                        <ArrowRight className="ml-2 h-4 w-4" />
+                                    </>
+                                )}
+                            </Button>
+                        </div>
+                        {message && (
+                            <p className={`text-sm text-left px-1 ${status === 'error' ? 'text-destructive' : 'text-green-600'}`}>
+                                {message}
+                            </p>
+                        )}
                     </div>
 
                     <p className="text-sm text-muted-foreground">
