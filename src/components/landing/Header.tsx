@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 
 export function Header() {
@@ -18,12 +17,10 @@ export function Header() {
                 <div className="flex items-center gap-2">
                     {/* Logo */}
                     <div className="relative w-48 h-12">
-                        <Image
-                            src="/DARK_HR.png"
+                        <img
+                            src="/thc-landing-page/DARK_HR.png"
                             alt="The Hiring Company Logo"
-                            fill
-                            className="object-contain object-left"
-                            priority
+                            className="w-full h-full object-contain object-left"
                         />
                     </div>
                 </div>
