@@ -9,7 +9,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://kshitij0299.github.io/thc-landing-page"),
+  metadataBase: new URL("https://kshitij0299.github.io"),
   title: "IRS - Outcomes-first Hiring",
   description: "Replace hiring intuition with structured intent.",
 };
