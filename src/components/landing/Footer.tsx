@@ -4,7 +4,7 @@ export function Footer() {
             <div className="container mx-auto px-4 text-center space-y-4">
                 <div className="py-8">
                     <img
-                        src="/thc-landing-page/DARK_HR.png"
+                        src="/DARK_HR.png"
                         alt="The Hiring Company"
                         className="w-[80vw] max-w-[600px] h-auto mx-auto opacity-90"
                     />

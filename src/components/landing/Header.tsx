@@ -18,7 +18,7 @@ export function Header() {
                     {/* Logo */}
                     <div className="relative w-48 h-12">
                         <img
-                            src="/thc-landing-page/DARK_HR.png"
+                            src="/DARK_HR.png"
                             alt="The Hiring Company Logo"
                             className="w-full h-full object-contain object-left"
                         />
